@@ -34,7 +34,6 @@ interface IAppState {
     preview: string;
     order: IOrder;
     total: string | number;
-    loading: boolean;
 }
 
 // Тип для ошибок валидации
