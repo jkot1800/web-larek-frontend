@@ -6,41 +6,75 @@ export interface IProductItem {
 	title: string;
 	category: string;
 	price: number | null;
+	// Добавлен ли товар в корзину
+	isAddedToBasket?: boolean;
+}
+
+// Тип товара(его свойства) в корзине
+export type ProductsInBasket = Pick<
+	IProductItem,
+	'id' | 'title' | 'price' | 'isAddedToBasket'
+>;
+// Интерфейс данных, передаваемых корзиной вместе с событием
+export interface IBasketEventData {
+	basket: ProductsInBasket[];
 }
 
 /* Интерфейс массива с товарами */
-interface IProductList {
+export interface IProductList {
 	items: IProductItem[];
 }
 
-/* Интерфейс формы заказа */
-interface IOrderForm {
+/* Общий тип формы заказа */
+export type IOrderForm = Partial<IOrderFormContacts> &
+	Partial<IOrderFormDelivery>;
+
+// Интерфейс формы с указанием способа оплаты и адреса доставки
+export interface IOrderFormDelivery {
 	payment: string;
+	address: string;
+}
+// Интерфейс формы указания контактов
+export interface IOrderFormContacts {
 	email: string;
 	phone: string;
-	adress: string;
-	total: number | string;
 }
 
 /* Массив с выбранными и добавленными в корзину товарами */
-interface IOrder extends IOrderForm {
-    items: string[];
+export interface IOrder extends IOrderForm {
+	total: number;
+	items: string[];
 }
+// Опции оплаты
+export type PayOptions = 'card' | 'cash' | '';
 
 /* состояние приложения */
-interface IAppState {
-    catalog: IProductItem[];
-    basket: string[];
-    preview: string;
-    order: IOrder;
-    total: string | number;
+export interface IAppState {
+	catalog: IProductItem[];
+	basket: string[];
+	preview: string;
+	order: IOrder;
+	total: string | number;
 }
 
 // Тип для ошибок валидации
-type FormErrors = Partial<Record<keyof IOrder, string>>;
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
 /* Результат заказа (Информация, которую отдаст сервер после получения заказа)*/
-interface IOrderResult {
-    id: string;
+export interface IOrderResult {
+	id: string;
 	total: number | string;
+}
+// Интерфейс окна успеха заказа
+export interface IOrderSuccess {
+	total: number;
+}
+// Интерфейс события окна успеха заказа
+export interface IOrderSuccessActions {
+	onClick: () => void;
+}
+
+// 	Интерфейс данных передаваемы вместе с событием в каталоге
+export interface ICatalogEventData {
+	catalog: IProductItem[];
 }
